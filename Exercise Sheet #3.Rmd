@@ -69,3 +69,37 @@ Git's Strengths and Weaknesses:
 ### a)
 
 GitHub repo: <https://github.com/MinhSonTran97/exeRcise-sheet-3.git>
+
+## Exercise 3
+
+### a)
+
+```{r}
+pixar_films <- read_csv("data/pixar_films.csv") %>%
+  filter(!is.na(film))
+
+pixar_films <- pixar_films %>%
+  mutate(rating_factor = factor(film_rating))
+```
+
+The possible film_rating values are
+`r unique(pixar_films$rating_factor)`:
+
+-   "G": General audiences
+
+-   "PG": Parental guidance is advised
+
+-   "N/A": Film Rating is not available / no rating provided. This is included since we only removed entries with missing titles
+
+Converting film_rating into rating_factor is appropriate because:
+
+-   film_rating represents a set of discrete categories, not numeric
+    values. These categories describe the type of audience the film is
+    suitable for, not a measurable quantity.
+
+-   Treating film_rating as a factor helps R recognize it as a
+    categorical variable, which allow us to better summarize, plot, and
+    handle the data in modeling.
+
+
+### b)
