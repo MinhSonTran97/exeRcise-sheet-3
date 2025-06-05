@@ -81,8 +81,7 @@ pixar_films <- read_csv("data/pixar_films.csv") %>%
   filter(!is.na(film))
 ```
 
-The possible film_rating values are
-`r unique(pixar_films$film_rating)`:
+The possible film_rating values are `r unique(pixar_films$film_rating)`:
 
 -   "G": General audiences
 
@@ -172,21 +171,20 @@ ggplot(
   theme_minimal()
 ```
 
+We can see that the first installments in each series all have the
+highest Metacritic score. After that there, is a clear downward trend in
+most series, meaning that the sequels usually couldn't perform as well
+as the prequels.
 
-We can see that the first installments in each series all have the highest Metacritic score. After that there, is a clear downward trend in most series, meaning that the sequels usually couldn't perform as well as the prequels.
+## Exercise 4
 
+### c)
 
+-   Dataset Name: Alcohol consumption since 1890 (Alexander & Holmes,
+    2017)
 
-
-
-
-
-
-
-
-
-
-
+-   Link:
+    [https://github.com/owid/owid-datasets/tree/master/datasets/Alcohol%20consumption%20since%201890%20(Alexander%20%26%20Holmes%2C%202017)](https://github.com/owid/owid-datasets/tree/master/datasets/Alcohol%20consumption%20since%201890%20(Alexander%20%26%20Holmes%2C%202017)){.uri}
 
 
 
