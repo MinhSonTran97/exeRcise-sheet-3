@@ -3,9 +3,9 @@ title: 'Exercise Sheet #3'
 subtitle: "Fortgeschrittene Statistische Software für NF"
 author: "Minh Son Tran (12424799)"
 date: "`2025-06-05"
-#output: 
-#  bookdown::pdf_document2: default
-output: distill::distill_article
+output: 
+  bookdown::pdf_document2: default
+#output: distill::distill_article
 editor_options: 
   markdown: 
     wrap: 72
@@ -29,6 +29,7 @@ knitr::opts_chunk$set(
 #install.packages("reticulate")
 #install.packages("effects")
 #install.packages("carData")
+#install.packages("sf")
 library(readr)
 library(tidyverse)
 library(palmerpenguins)
@@ -42,6 +43,7 @@ library(reticulate)
 library(margins)
 library(lattice)
 library(effects)
+library(sf)
 ```
 
 ## Exercise 1
@@ -103,3 +105,18 @@ Converting film_rating into rating_factor is appropriate because:
 
 
 ### b)
+
+```{r}
+film_series <- pixar_films %>%
+  filter(str_detect(film,"Toy Story|Cars|Incredibles|Finding|Monsters")) %>%
+  mutate(series = case_when(
+    str_detect(film,"Toy Story") ~ "Toy Story",
+    str_detect(film,"Cars") ~ "Cars",
+    str_detect(film,"Incredibles") ~ "Incredibles",
+    str_detect(film,"Finding") ~ "Finding",
+    str_detect(film,"Monsters") ~ "Monsters"
+  )) %>%
+  group_by(series) %>%
+  summarise(films = paste(film, collapse = " - "), number_of_entries = n())
+film_series
+```

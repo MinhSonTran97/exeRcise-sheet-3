@@ -2395,6 +2395,7 @@ distill-header .nav a {
 <span><span class="co">#install.packages(&quot;reticulate&quot;)</span></span>
 <span><span class="co">#install.packages(&quot;effects&quot;)</span></span>
 <span><span class="co">#install.packages(&quot;carData&quot;)</span></span>
+<span><span class="co">#install.packages(&quot;sf&quot;)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
@@ -2407,7 +2408,8 @@ distill-header .nav a {
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/">reticulate</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bbolker/margins">margins</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lattice.r-forge.r-project.org/">lattice</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.r-project.org">effects</a></span><span class="op">)</span></span></code></pre>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.r-project.org">effects</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 <h2 id="exercise-1">Exercise 1</h2>
@@ -2456,7 +2458,31 @@ categorical variable, which allow us to better summarize, plot, and
 handle the data in modeling.</p></li>
 </ul>
 <h3 id="b">b)</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">film_series</span> <span class="op">&lt;-</span> <span class="va">pixar_films</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">film</span>,<span class="st">&quot;Toy Story|Cars|Incredibles|Finding|Monsters&quot;</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>series <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">film</span>,<span class="st">&quot;Toy Story&quot;</span><span class="op">)</span> <span class="op">~</span> <span class="st">&quot;Toy Story&quot;</span>,</span>
+<span>    <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">film</span>,<span class="st">&quot;Cars&quot;</span><span class="op">)</span> <span class="op">~</span> <span class="st">&quot;Cars&quot;</span>,</span>
+<span>    <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">film</span>,<span class="st">&quot;Incredibles&quot;</span><span class="op">)</span> <span class="op">~</span> <span class="st">&quot;Incredibles&quot;</span>,</span>
+<span>    <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">film</span>,<span class="st">&quot;Finding&quot;</span><span class="op">)</span> <span class="op">~</span> <span class="st">&quot;Finding&quot;</span>,</span>
+<span>    <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">film</span>,<span class="st">&quot;Monsters&quot;</span><span class="op">)</span> <span class="op">~</span> <span class="st">&quot;Monsters&quot;</span></span>
+<span>  <span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">series</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>films <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">film</span>, collapse <span class="op">=</span> <span class="st">&quot; - &quot;</span><span class="op">)</span>, number_of_entries <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">film_series</span></span></code></pre>
+</div>
+<pre><code># A tibble: 5 × 3
+  series      films                                  number_of_entries
+  &lt;chr&gt;       &lt;chr&gt;                                              &lt;int&gt;
+1 Cars        Cars - Cars 2 - Cars 3                                 3
+2 Finding     Finding Nemo - Finding Dory                            2
+3 Incredibles The Incredibles - Incredibles 2                        2
+4 Monsters    Monsters, Inc. - Monsters University                   2
+5 Toy Story   Toy Story - Toy Story 2 - Toy Story 3…                 4</code></pre>
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
