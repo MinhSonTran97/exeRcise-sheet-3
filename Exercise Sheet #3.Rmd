@@ -3,9 +3,9 @@ title: 'Exercise Sheet #3'
 subtitle: "Fortgeschrittene Statistische Software für NF"
 author: "Minh Son Tran (12424799)"
 date: "`2025-06-05"
-output: 
-  bookdown::pdf_document2: default
-#output: distill::distill_article
+#output: 
+#  bookdown::pdf_document2: default
+output: distill::distill_article
 editor_options: 
   markdown: 
     wrap: 72
@@ -120,3 +120,53 @@ film_series <- pixar_films %>%
   summarise(films = paste(film, collapse = " - "), number_of_entries = n())
 film_series
 ```
+
+
+### c)
+
+```{r}
+public_response <- read_csv("data/public_response.csv")
+
+unique(public_response$cinema_score)  
+```
+
+We can see that the only rating scores are `r unique(public_response$cinema_score)`. We would assume that NA means the score is less than an A-, meaning the scoring system will look like this : NA < A- < A < A+
+
+
+```{r}
+score_order <- c("NA", "A-", "A", "A+")
+public_response <- public_response %>%
+  mutate(cinema_score = factor(cinema_score, levels = score_order, ordered = TRUE))
+
+pixar_sum <- left_join(pixar_films, public_response, by = "film")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

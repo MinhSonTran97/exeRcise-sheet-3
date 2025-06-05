@@ -2482,7 +2482,26 @@ handle the data in modeling.</p></li>
 4 Monsters    Monsters, Inc. - Monsters University                   2
 5 Toy Story   Toy Story - Toy Story 2 - Toy Story 3…                 4</code></pre>
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h3 id="c">c)</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">public_response</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">&quot;data/public_response.csv&quot;</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">public_response</span><span class="op">$</span><span class="va">cinema_score</span><span class="op">)</span>  </span></code></pre>
+</div>
+<pre><code>[1] &quot;A&quot;  &quot;A+&quot; &quot;A-&quot; NA  </code></pre>
+</div>
+<p>We can see that the only rating scores are A, A+, A-, NA. We would assume that NA means the score is less than an A-, meaning the scoring system will look like this : NA &lt; A- &lt; A &lt; A+</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class="va">score_order</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">&quot;NA&quot;</span>, <span class="st">&quot;A-&quot;</span>, <span class="st">&quot;A&quot;</span>, <span class="st">&quot;A+&quot;</span><span class="op">)</span></span>
+<span><span class="va">public_response</span> <span class="op">&lt;-</span> <span class="va">public_response</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>cinema_score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cinema_score</span>, levels <span class="op">=</span> <span class="va">score_order</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pixar_sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">pixar_films</span>, <span class="va">public_response</span>, by <span class="op">=</span> <span class="st">&quot;film&quot;</span><span class="op">)</span></span></code></pre>
+</div>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
