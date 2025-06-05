@@ -1,0 +1,65 @@
+---
+title: 'Exercise Sheet #3'
+subtitle: "Fortgeschrittene Statistische Software für NF"
+author: "Minh Son Tran (12424799)"
+date: "`2025-06-5"
+#output: 
+#  bookdown::pdf_document2: default
+output: distill::distill_article
+editor_options: 
+  markdown: 
+    wrap: 72
+bibliography: references.bib
+link-citations: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  fig.align  = "center"
+)
+
+```
+
+```{r, message=FALSE, warning=FALSE}
+#install.packages("tidyverse")
+#install.packages("palmerpenguins")
+#install.packages("dplyr")
+#install.packages("knitr")
+#install.packages("easystats")
+#install.packages("stargazer")
+#install.packages("margins")
+#install.packages("reticulate")
+#install.packages("effects")
+#install.packages("carData")
+library(readr)
+library(tidyverse)
+library(palmerpenguins)
+library(dplyr)
+library(knitr)
+library(ggplot2)
+library(report)
+library(parameters)
+library(see)
+library(reticulate)
+library(margins)
+library(lattice)
+library(effects)
+```
+
+## Exercise 1
+
+### d) Git's Strengths and Weaknesses
+
+2 strengths:
+
+-   It allow user to create branches, makes it easy to experiment
+    without affecting the main codebase.
+
+-   It is open source and actively maintained.
+
+2 weaknesses:
+
+-   User requires time to learn how to use Git properly because of
+    confusing commands.
+
+-   Git is not very good for project with binary or very large files
