@@ -192,3 +192,24 @@ Research question: How has the global adult literacy rate changed
 between 1970 and 2015? 
 
 The period from 1970 to 2015 includes major global education initiatives, such as UNESCO’s Education for All, making it an interesting and relevant timeframe to assess how these efforts have impacted adult literacy worldwide.
+
+
+
+### e)
+
+```{r}
+world_literacy <- read_csv("data/Cross-country literacy rates - World Bank, CIA World Factbook, and other sources.csv")
+
+literacy_trend <- world_literacy %>%
+  filter(Year >= 1970) %>%
+  group_by(Year) %>%
+  summarise(avg_world_literacy = mean(`Literacy rates (World Bank, CIA World Factbook, and other sources)`), na.rm = TRUE)
+
+literacy_change <- literacy_trend %>%
+  filter(Year %in% c(1970, 2015)) %>%
+  mutate(change = round(avg_world_literacy - lag(avg_world_literacy), 1)) %>%
+  ungroup()
+```
+
+The global mean adult literacy rate rose from `r round(literacy_change$avg_world_literacy[1],2)`% in `r round(literacy_change$Year[1])` to `r round(literacy_change$avg_world_literacy[2],2)`% in `r round(literacy_change$Year[2])`, an increase of about `r round(literacy_change$change[2],2)`% over 45 years. While the increase may seem modest, it represents millions of additional literate adults globally, which is a significant improvement, especially in regions starting with lower literacy.
+
