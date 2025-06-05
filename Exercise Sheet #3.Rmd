@@ -46,7 +46,9 @@ library(effects)
 
 ## Exercise 1
 
-### d) Git's Strengths and Weaknesses
+### d)
+
+Git's Strengths and Weaknesses:
 
 2 strengths:
 
@@ -61,3 +63,9 @@ library(effects)
     confusing commands.
 
 -   Git is not very good for project with binary or very large files
+
+## Exercise 2
+
+### a)
+
+GitHub repo: <https://github.com/MinhSonTran97/exeRcise-sheet-3.git>
