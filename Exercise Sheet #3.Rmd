@@ -152,7 +152,8 @@ pixar_sum <- left_join(pixar_films, public_response, by = "film")
 pixar_series <- pixar_sum %>%
   filter(!is.na(series)) %>%
   filter(!is.na(metacritic))
-
+```
+```{r pixar-metacritic, fig.cap= "How well do the sequels perform compared to the first installments"}
 ggplot(
   data = pixar_series,
   aes(
@@ -166,12 +167,12 @@ ggplot(
   labs(
     x = NULL,
     y = "Metacritic",
-    fill = "Film (chronological)",
-    title = "How well do the sequels perform compared to the first installments") +
+    fill = "Film (chronological)"
+    ) +
   theme_minimal()
 ```
 
-We can see that the first installments in each series all have the
+We can see in Figure \@ref(fig:pixar-metacritic) that the first installments in each series all have the
 highest Metacritic score. After that there, is a clear downward trend in
 most series, meaning that the sequels usually couldn't perform as well
 as the prequels.
@@ -180,13 +181,14 @@ as the prequels.
 
 ### c)
 
--   Dataset Name: Alcohol consumption since 1890 (Alexander & Holmes,
-    2017)
-
+-   Dataset Name: Cross-country literacy rates - World Bank, CIA World
+    Factbook, and other sources
 -   Link:
-    [https://github.com/owid/owid-datasets/tree/master/datasets/Alcohol%20consumption%20since%201890%20(Alexander%20%26%20Holmes%2C%202017)](https://github.com/owid/owid-datasets/tree/master/datasets/Alcohol%20consumption%20since%201890%20(Alexander%20%26%20Holmes%2C%202017)){.uri}
+    <https://github.com/owid/owid-datasets/tree/master/datasets/Cross-country%20literacy%20rates%20-%20World%20Bank%2C%20CIA%20World%20Factbook%2C%20and%20other%20sources>
 
+### d)
 
+Research question: How has the global adult literacy rate changed
+between 1970 and 2015? 
 
-
-
+The period from 1970 to 2015 includes major global education initiatives, such as UNESCO’s Education for All, making it an interesting and relevant timeframe to assess how these efforts have impacted adult literacy worldwide.
