@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 ```
 
-```{r, message=FALSE, warning=FALSE}
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
 #install.packages("tidyverse")
 #install.packages("palmerpenguins")
 #install.packages("dplyr")
@@ -82,18 +82,18 @@ pixar_films <- read_csv("data/pixar_films.csv") %>%
 ```
 
 The possible film_rating values are
-`r unique(pixar_films$rating_factor)`:
+`r unique(pixar_films$film_rating)`:
 
 -   "G": General audiences
 
 -   "PG": Parental guidance is advised
 
--   "N/A": Film Rating is not available / no rating provided. This is included since we only removed entries with missing titles. In this case, I would assume that it covers PG-13 and up
-
+-   "N/A": Film Rating is not available / no rating provided. This is
+    included since we only removed entries with missing titles.
 
 ```{r}
 pixar_films <- pixar_films %>%
-  mutate(rating_factor = factor(film_rating, levels = c("G", "PG", "NA"), ordered = TRUE))
+  mutate(film_rating = factor(film_rating, levels = c("G", "PG"), ordered = TRUE))
 ```
 
 Converting film_rating into rating_factor is appropriate because:
@@ -106,24 +106,26 @@ Converting film_rating into rating_factor is appropriate because:
     categorical variable, which allow us to better summarize, plot, and
     handle the data in modeling.
 
-
 ### b)
 
 ```{r}
-film_series <- pixar_films %>%
-  filter(str_detect(film,"Toy Story|Cars|Incredibles|Finding|Monsters")) %>%
+pixar_films <- pixar_films %>%
   mutate(series = case_when(
     str_detect(film,"Toy Story") ~ "Toy Story",
     str_detect(film,"Cars") ~ "Cars",
     str_detect(film,"Incredibles") ~ "Incredibles",
     str_detect(film,"Finding") ~ "Finding",
-    str_detect(film,"Monsters") ~ "Monsters"
+    str_detect(film,"Monsters") ~ "Monsters",
+    TRUE ~ NA_character_
   )) %>%
-  group_by(series) %>%
-  summarise(films = paste(film, collapse = " - "), number_of_entries = n())
+  group_by(series)
+
+film_series <- pixar_films %>%
+  filter(str_detect(film,"Toy Story|Cars|Incredibles|Finding|Monsters")) %>%
+  summarise(films = paste(film, collapse = " - "), number_of_entries = n()) %>%
+  ungroup()
 film_series
 ```
-
 
 ### c)
 
@@ -133,28 +135,45 @@ public_response <- read_csv("data/public_response.csv")
 unique(public_response$cinema_score)  
 ```
 
-We can see that the only rating scores are `r unique(public_response$cinema_score)`. We would assume that NA means the score is less than an A-, meaning the scoring system will look like this : NA < A- < A < A+
-
+We can see that the only rating scores are
+`r unique(public_response$cinema_score)`. We would assume that NA means
+the score is missing or not included, meaning the scoring system will
+look like this : A- \< A \< A+
 
 ```{r}
-score_order <- c("NA", "A-", "A", "A+")
 public_response <- public_response %>%
-  mutate(cinema_score = factor(cinema_score, levels = score_order, ordered = TRUE))
+  mutate(cinema_score = factor(cinema_score, levels = c("A-", "A", "A+"), ordered = TRUE))
 
 pixar_sum <- left_join(pixar_films, public_response, by = "film")
 ```
 
+### d)
+
+```{r}
+pixar_series <- pixar_sum %>%
+  filter(!is.na(series)) %>%
+  filter(!is.na(metacritic))
+
+ggplot(
+  data = pixar_series,
+  aes(
+    x = series,
+    y = metacritic,
+    fill = fct_reorder(film, release_date)
+  )) +
+  geom_col(
+    width = 0.75,
+    position = position_dodge(width = 0.75)) +
+  labs(
+    x = NULL,
+    y = "Metacritic",
+    fill = "Film (chronological)",
+    title = "How well do the sequels perform compared to the first installments") +
+  theme_minimal()
+```
 
 
-
-
-
-
-
-
-
-
-
+We can see that the first installments in each series all have the highest Metacritic score. After that there, is a clear downward trend in most series, meaning that the sequels usually couldn't perform as well as the prequels.
 
 
 
