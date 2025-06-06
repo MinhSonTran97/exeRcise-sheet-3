@@ -2,13 +2,8 @@
 title: 'Exercise Sheet #3'
 subtitle: "Fortgeschrittene Statistische Software für NF"
 author: "Minh Son Tran (12424799)"
-date: "`2025-06-05"
-#output: 
-#  bookdown::pdf_document2: default
+date: "`r Sys.Date()`"
 output: distill::distill_article
-editor_options: 
-  markdown: 
-    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
