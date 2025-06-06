@@ -76,7 +76,7 @@ GitHub repo: <https://github.com/MinhSonTran97/exeRcise-sheet-3.git>
 
 ### a)
 
-```{r}
+```{r echo = TRUE, message=FALSE, warning=FALSE}
 pixar_films <- read_csv("data/pixar_films.csv") %>%
   filter(!is.na(film))
 ```
@@ -90,7 +90,7 @@ The possible film_rating values are `r unique(pixar_films$film_rating)`:
 -   "N/A": Film Rating is not available / no rating provided. This is
     included since we only removed entries with missing titles.
 
-```{r}
+```{r echo = TRUE, message=FALSE, warning=FALSE}
 pixar_films <- pixar_films %>%
   mutate(film_rating = factor(film_rating, levels = c("G", "PG"), ordered = TRUE))
 ```
@@ -107,7 +107,7 @@ Converting film_rating into rating_factor is appropriate because:
 
 ### b)
 
-```{r}
+```{r echo = TRUE, message=FALSE, warning=FALSE}
 pixar_films <- pixar_films %>%
   mutate(series = case_when(
     str_detect(film,"Toy Story") ~ "Toy Story",
@@ -128,7 +128,7 @@ film_series
 
 ### c)
 
-```{r}
+```{r echo = TRUE, message=FALSE, warning=FALSE}
 public_response <- read_csv("data/public_response.csv")
 
 unique(public_response$cinema_score)  
@@ -139,7 +139,7 @@ We can see that the only rating scores are
 the score is missing or not included, meaning the scoring system will
 look like this : A- \< A \< A+
 
-```{r}
+```{r echo = TRUE, message=FALSE, warning=FALSE}
 public_response <- public_response %>%
   mutate(cinema_score = factor(cinema_score, levels = c("A-", "A", "A+"), ordered = TRUE))
 
@@ -148,12 +148,13 @@ pixar_sum <- left_join(pixar_films, public_response, by = "film")
 
 ### d)
 
-```{r}
+```{r echo = TRUE, message=FALSE, warning=FALSE}
 pixar_series <- pixar_sum %>%
   filter(!is.na(series)) %>%
   filter(!is.na(metacritic))
 ```
-```{r pixar-metacritic, fig.cap= "How well do the sequels perform compared to the first installments"}
+
+```{r pixar-metacritic, fig.cap = "Performance comparison of sequels versus their first installments in film series", echo = TRUE, message=FALSE, warning=FALSE}
 ggplot(
   data = pixar_series,
   aes(
@@ -167,15 +168,16 @@ ggplot(
   labs(
     x = NULL,
     y = "Metacritic",
-    fill = "Film (chronological)"
+    fill = "Film (chronological)",
+    title = "Sequel vs. Original: Metacritic Comparison"
     ) +
   theme_minimal()
 ```
 
-We can see in Figure \@ref(fig:pixar-metacritic) that the first installments in each series all have the
-highest Metacritic score. After that there, is a clear downward trend in
-most series, meaning that the sequels usually couldn't perform as well
-as the prequels.
+We can see in Figure \@ref(fig:pixar-metacritic) that the first
+installments in each series all have the highest Metacritic score. After
+that there, is a clear downward trend in most series, meaning that the
+sequels usually couldn't perform as well as the prequels.
 
 ## Exercise 4
 
@@ -188,16 +190,17 @@ as the prequels.
 
 ### d)
 
-Research question: How has the global adult literacy rate changed
-between 1970 and 2015? 
+Research question: How has the global literacy rate changed between 1970
+and 2015?
 
-The period from 1970 to 2015 includes major global education initiatives, such as UNESCO’s Education for All, making it an interesting and relevant timeframe to assess how these efforts have impacted adult literacy worldwide.
-
-
+The period from 1970 to 2015 includes major global education
+initiatives, such as UNESCO’s Education for All, making it an
+interesting and relevant timeframe to assess how these efforts have
+impacted the average literacy rate worldwide.
 
 ### e)
 
-```{r}
+```{r echo = TRUE, message=FALSE, warning=FALSE}
 world_literacy <- read_csv("data/Cross-country literacy rates - World Bank, CIA World Factbook, and other sources.csv")
 
 literacy_trend <- world_literacy %>%
@@ -211,5 +214,57 @@ literacy_change <- literacy_trend %>%
   ungroup()
 ```
 
-The global mean adult literacy rate rose from `r round(literacy_change$avg_world_literacy[1],2)`% in `r round(literacy_change$Year[1])` to `r round(literacy_change$avg_world_literacy[2],2)`% in `r round(literacy_change$Year[2])`, an increase of about `r round(literacy_change$change[2],2)`% over 45 years. While the increase may seem modest, it represents millions of additional literate adults globally, which is a significant improvement, especially in regions starting with lower literacy.
+The global mean literacy rate rose from
+`r round(literacy_change$avg_world_literacy[1],2)`% in
+`r round(literacy_change$Year[1])` to
+`r round(literacy_change$avg_world_literacy[2],2)`% in
+`r round(literacy_change$Year[2])`, an increase of about
+`r round(literacy_change$change[2],2)`% over 45 years. While the
+increase may seem modest, it represents millions of additional literate
+people globally, which is a significant improvement, especially in
+regions starting with lower literacy.
 
+### f)
+
+```{r literacy-trend,fig.cap = "Global average and country-specific literacy rate trend, from 1970 to 2015.<br><span style='color:blue;font-weight:700;'>───</span><span style='font-size:10px;'>  Global average literacy rate over time  </span><span style='color:red;font-weight:700;'>───</span><span style='font-size:10px;'>  Global average literacy rate differences between 1970 and 2015</span>", echo = TRUE, message=FALSE, warning=FALSE}
+
+ggplot() +
+  geom_line(
+    data = world_literacy %>%
+      filter(Year >= 1970),
+    aes(
+      x = Year,
+      y = `Literacy rates (World Bank, CIA World Factbook, and other sources)`,
+      group = Entity,
+      color = Entity),
+    alpha = 0.5,
+    size = 0.25,
+    show.legend = FALSE
+    ) +
+  geom_line(
+    data = literacy_trend,
+    aes(
+      x = Year,
+      y = avg_world_literacy
+    ),
+    color = "blue",
+    size = 1
+  ) +
+  geom_line(
+    data = literacy_change,
+    aes(
+      x = Year,
+      y = avg_world_literacy
+    ),
+    color = "red",
+    size = 1.5
+  ) +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  scale_x_continuous(
+    breaks = seq(1970, 2015, by = 15),
+    labels = scales::label_number()) +
+  labs(
+    x = "Year",
+    y = "Literacy rate (%)") +
+  theme_minimal()
+```
